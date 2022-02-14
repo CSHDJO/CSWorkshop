@@ -1,0 +1,37 @@
+﻿<mah:MetroWindow x:Class="ChipSoft.Workshop.PatientRegistration.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChipSoft.Workshop.PatientRegistration"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Patiëntregistratie app" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="0, 3, 0, 10">
+            <TextBox Margin="5,0,0,0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}" Width="200" mah:TextBoxHelper.Watermark="Zoeken..."/>
+
+            <Button Content="Patiënt toevoegen" Margin="5,0,0,0" Command="{Binding AddPatientCommand}"/>
+            <!-- TODO: Link commands-->
+            <Button Content="Patiënt wijzigen" Margin="5,0,0,0" />
+            <Button Content="Patiënt verwijderen" Margin="5,0,0,0" />
+            <Button Content="Patiënt consults" Margin="5,0,0,0"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding CurrentPatients}" SelectedItem="{Binding SelectedItem}" AutoGenerateColumns="false" IsReadOnly="True" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Voornaam" Binding="{Binding FirstName}"/>
+                    <DataGridTextColumn Header="Achternaam" Binding="{Binding LastName}"/>
+                    <DataGridTextColumn Header="Adres" Binding="{Binding Address}"/>
+                    <DataGridTextColumn Header="Geboortedatum" Binding="{Binding DateOfBirth, StringFormat={}dd-MM-yyyy}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+
+    </Grid>
+</mah:MetroWindow>
