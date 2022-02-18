@@ -25,12 +25,16 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Voornaam" Margin="2"/>
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FirstName}" Margin="2"/>
 
+        <Label Grid.Row="1" Grid.Column="0" Content="Achternaam" Margin="2"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LastName}" Margin="2"/>
 
+        <Label Grid.Row="2" Grid.Column="0" Content="Adres" Margin="2"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Address}" Margin="2"/>
 
         <Label Grid.Row="3" Grid.Column="0" Content="Geboortedatum" Margin="2"/>
         <DatePicker Grid.Row="3" Grid.Column="1" SelectedDate="{Binding DateOfBirth}" Margin="2"/>
 
         <Button Grid.ColumnSpan="2" Content="Annuleren" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Grid.Row="1000" Margin="5"/>
-        <Button Grid.ColumnSpan="2" Content="Opslaan" HorizontalAlignment="Right" Grid.Row="1000" Margin="5"/>
+        <Button Grid.ColumnSpan="2" Content="Opslaan" Command="{Binding SaveCommand}" HorizontalAlignment="Right" Grid.Row="1000" Margin="5"/>
     </Grid>
 </mah:MetroWindow>

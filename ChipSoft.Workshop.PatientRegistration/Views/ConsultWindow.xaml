@@ -7,12 +7,13 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="{Binding Title}" Height="400" Width="600">
+        Title="{Binding Title}" Height="600" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -22,11 +23,53 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Datum van consult" Margin="2"/>
         <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding DateOfConsult}" Margin="2"/>
-        
 
-        <Button Grid.ColumnSpan="2" Content="Annuleren" Command="{Binding CancelCommand}"
-                HorizontalAlignment="Left" Grid.Row="1000" Margin="5"/>
-        <Button Grid.ColumnSpan="2" Content="Opslaan" 
-                HorizontalAlignment="Right" Grid.Row="1000" Margin="5"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Reden van komt" Margin="2"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Reason}" Margin="2"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Consult" Margin="2"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Consultation}" Margin="2"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Acties" Margin="2"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ActionsToDo}" Margin="2"/>
+
+
+        <GroupBox Grid.Row="4" Grid.ColumnSpan="2" Header="Medicatie">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox IsEditable="False" Grid.Row="0" Margin="2"
+                          ItemsSource="{Binding PossibleMedications}" 
+                          SelectedItem="{Binding SelectedMedicationDefinition}"
+                          DisplayMemberPath="Name"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <Button Content="+" Margin="5,0,0,0" Command="{Binding AddMedicationCommand}"/>
+                    <Button Content="Medicatie verwijderen" Margin="5,0,0,0" Command="{Binding DeleteMedicationCommand}"/>
+                </StackPanel>
+                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Grid.Row="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMedication}" ItemsSource="{Binding Medications}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding MedicationObject.Name}" Width="*" Header="Medicament"/>
+                        <DataGridTemplateColumn Header="Hoeveelheid" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <mah:NumericUpDown Value="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="100"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </GroupBox>
+
+
+        <Button Grid.ColumnSpan="2" Content="Annuleren" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Grid.Row="1000" Margin="5"/>
+        <Button Grid.ColumnSpan="2" Content="Opslaan" Command="{Binding SaveCommand}" HorizontalAlignment="Right" Grid.Row="1000" Margin="5"/>
     </Grid>
 </mah:MetroWindow>

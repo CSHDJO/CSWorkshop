@@ -30,7 +30,7 @@ namespace ChipSoft.Workshop.PatientRegistration.BussinessLogic
         }
 
 
-        public void AddNewConsult(Patient patient, string reason, string consultation, string actionsToDo, DateTime dateOfConsult)
+        public void AddNewConsult(Patient patient, string reason, string consultation, string actionsToDo, DateTime dateOfConsult, List<Medication> medications)
         {
             if (string.IsNullOrWhiteSpace(reason))
             {
@@ -47,12 +47,13 @@ namespace ChipSoft.Workshop.PatientRegistration.BussinessLogic
                 DateOfConsult = dateOfConsult,
                 Consultation = consultation,
                 ActionsToDo = actionsToDo,
-                PatientId = patient.Id
+                PatientId = patient.Id,
+                Medications = medications
             };
             _data.Add(consult);
         }
 
-        public void EditConsult(Guid consultId, string reason, string consultation, string actionsToDo, DateTime dateOfConsult)
+        public void EditConsult(Guid consultId, string reason, string consultation, string actionsToDo, DateTime dateOfConsult, List<Medication> medications)
         {
 
             if (string.IsNullOrWhiteSpace(reason))
@@ -74,6 +75,7 @@ namespace ChipSoft.Workshop.PatientRegistration.BussinessLogic
             consult.DateOfConsult = dateOfConsult;
             consult.Consultation = consultation;
             consult.ActionsToDo = actionsToDo;
+            consult.Medications = medications;
         }
         public void DeleteConsult(Guid consultId)
         {

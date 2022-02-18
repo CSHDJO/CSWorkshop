@@ -22,7 +22,8 @@ namespace ChipSoft.Workshop.PatientRegistration.ViewModels
         {
             Title = $"Patiënt {patient.FirstName} {patient.LastName} wijzigen";
             FirstName = patient.FirstName;
-            //TODO:Andere properties ook overnemen
+            LastName = patient.LastName;
+            Address = patient.Address;
             DateOfBirth = patient.DateOfBirth;
             InitializeCommands();
         }
@@ -37,7 +38,7 @@ namespace ChipSoft.Workshop.PatientRegistration.ViewModels
            {
                Result = true;
                View.Close();
-           }, () => !string.IsNullOrWhiteSpace(FirstName));
+           }, () => !string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName));
         }
 
         public bool Result { get; private set; } = false;
@@ -77,7 +78,26 @@ namespace ChipSoft.Workshop.PatientRegistration.ViewModels
             }
         }
 
-
+        string _lastName;
+        public string LastName
+        {
+            get => _lastName;
+            set
+            {
+                _lastName = value;
+                OnPropertyChanged();
+            }
+        }
+        string _address;
+        public string Address
+        {
+            get => _address;
+            set
+            {
+                _address = value;
+                OnPropertyChanged();
+            }
+        }
 
         DateTime _dateOfBirth;
         public DateTime DateOfBirth

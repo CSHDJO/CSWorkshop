@@ -19,8 +19,8 @@ namespace ChipSoft.Workshop.PatientRegistration.ViewModels
             Patient = patient;
 
             AddConsultCommand = new RelayCommand(ExecuteAddConsultCommand, CanExecuteAddConsultCommand);
- 
-            LoadConsults();
+            EditConsultCommand = new RelayCommand(ExecuteEditConsultCommand, CanExecuteEditConsultCommand);
+            DeleteConsultCommand = new RelayCommand(ExecuteDeleteConsultCommand, CanExecuteDeleteConsultCommand);
         }
 
         private bool CanExecuteAddConsultCommand()
@@ -29,7 +29,38 @@ namespace ChipSoft.Workshop.PatientRegistration.ViewModels
         }
 
         public RelayCommand AddConsultCommand { get; }
-       
+        public RelayCommand DeleteConsultCommand { get; }
+        public RelayCommand EditConsultCommand { get; }
+        private bool CanExecuteDeleteConsultCommand()
+        {
+            return SelectedConsult != null;
+        }
+
+        private void ExecuteDeleteConsultCommand()
+        {
+            ConsultRepository.Instance.DeleteConsult(SelectedConsult.Id);
+            SelectedConsult = null;
+            LoadConsults();
+        }
+
+        private void ExecuteEditConsultCommand()
+        {
+            var viewModel = new ConsultViewModel(SelectedConsult);
+            var view = new ConsultWindow();
+            view.DataContext = viewModel;
+            viewModel.View = view;
+            view.ShowDialog();
+            if (viewModel.Result)
+            {
+                ConsultRepository.Instance.EditConsult(SelectedConsult.Id, viewModel.Reason, viewModel.Consultation, viewModel.ActionsToDo, viewModel.DateOfConsult, viewModel.Medications.ToList());
+                LoadConsults();
+            }
+        }
+
+        private bool CanExecuteEditConsultCommand()
+        {
+            return SelectedConsult != null; //TODO:implement canedit
+        }
 
         private void ExecuteAddConsultCommand()
         {
@@ -40,7 +71,7 @@ namespace ChipSoft.Workshop.PatientRegistration.ViewModels
             view.ShowDialog();
             if (viewModel.Result)
             {
-                ConsultRepository.Instance.AddNewConsult(Patient, viewModel.Reason, "", "", viewModel.DateOfConsult);//TODO: gebruik nieuwe properties
+                ConsultRepository.Instance.AddNewConsult(Patient, viewModel.Reason, viewModel.Consultation, viewModel.ActionsToDo, viewModel.DateOfConsult, viewModel.Medications.ToList());
                 LoadConsults();
             }
         }
@@ -83,13 +114,20 @@ namespace ChipSoft.Workshop.PatientRegistration.ViewModels
                 {
                     Title = "Consults";
                 }
-
+                LoadConsults();
             }
         }
 
         private void LoadConsults()
         {
-            //TODO:load consults
+            if (Patient == null)
+            {
+                ConsultsOfPatient = new ObservableCollection<Consult>();
+            }
+            else
+            {
+                ConsultsOfPatient = new ObservableCollection<Consult>(ConsultRepository.Instance.GetConsultsForPatient(Patient));
+            }
         }
         string _title = "Consults";
         public string Title
